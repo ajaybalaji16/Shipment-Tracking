@@ -1,0 +1,11 @@
+@isTest
+public class ShipmentTrackingControllerMock implements HttpCalloutMock {
+    
+    public HttpResponse respond(HttpRequest req) {
+        HttpResponse res = new HttpResponse();
+        res.setBody('Shipped- On Time');
+        res.setStatusCode(200);
+        return res;
+    }
+    
+}
