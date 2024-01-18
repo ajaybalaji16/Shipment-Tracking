@@ -1,0 +1,19 @@
+@isTest
+public class ShipmentTrackingControllerTest {
+    
+    @isTest
+    static void fetchStatus() {
+        Account acc = new Account();
+        acc.Name = 'Test';
+        insert acc;
+        
+        Test.setMock(HttpCalloutMock.class, new ShipmentTrackingControllerMock());
+        
+        Test.startTest();
+        String res = ShipmentTrackingController.fetchShipmentStatus('Account', 'Tracking_Number__c', acc.Id);
+        Test.stopTest();
+        
+        System.assertEquals(res, 'Shipped- On Time');
+    }
+    
+}
