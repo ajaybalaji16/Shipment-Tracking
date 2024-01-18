@@ -1,0 +1,24 @@
+public class ShipmentTrackingController {
+
+    @AuraEnabled
+    public static String fetchShipmentStatus(String objectName, String fieldApi, String recordId) {
+
+        String query = 'SELECT ' + fieldApi + ' FROM ' + objectName + ' WHERE Id = :recordId';
+        List<sObject> recordsList = Database.query(query);
+
+        String endPointUrl = 'https://merzcommunities--mel.sandbox.my.salesforce-sites.com/services/apexrest/mockShipmentStatus';
+        if(recordsList[0].get(fieldApi) != null && recordsList[0].get(fieldApi) != '') {
+            endPointUrl += '?trackingNumber=' + recordsList[0].get(fieldApi);
+        }
+
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(endPointUrl);
+        req.setMethod('GET');
+
+        HttpResponse res = new HttpResponse();
+        res = new Http().send(req);
+        
+        return res.getBody();
+    }
+
+}
